@@ -1,7 +1,6 @@
 var express = require('express');
 var fs = require('fs');
 var path = require('path');
-var { promisify } = require('util');
 var uuid = require('uuid');
 
 //Set up the Express app
@@ -27,7 +26,6 @@ app.get("/notes", function(req, res) {
 // Gets any current notes in the db.json file
 app.get("/api/notes", function(req, res) {
     console.log("api/notes endPoint hit\n");
-    console.log("Current notes array: \n ------------- \n" + JSON.stringify(currentNotes))
 
     res.json(currentNotes);
 });
@@ -36,7 +34,7 @@ app.get("/api/notes", function(req, res) {
 // Post endpoint for saving notes
 app.post("/api/notes", function(req, res) {
     console.log("/api/notes post endpoint hit!");
-    console.log("Current notes array: \n ------------- \n" + JSON.stringify(currentNotes))
+
     let id = uuid();
     let newNote = { id: id, ...req.body }
     currentNotes.push(newNote);
@@ -56,11 +54,6 @@ app.delete("/api/notes/:id", function(req, res) {
     //console.log(req.body);
 
     currentNotes = currentNotes.filter((item) => {
-        if(item.id === id) {
-            console.log(true)
-        } else {
-            console.log(false)
-        }
         return item.id !== id;
     })
 
